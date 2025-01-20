@@ -107,8 +107,7 @@
             <h2 class="text-xl font-semibold text-gray-700 mb-4">Upload Image</h2>
             <input type="file" class="w-full" />
             <!-- Predict Button - Initially hidden -->
-            <button id="predictBtn"
-              class="hidden mt-4 bg-gradient-to-r from-indigo-900 to-purple-600 hover:from-indigo-950 hover:to-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+            <button id="predictBtn" class="hidden durian-button">
               Predict Durian Type
             </button>
             <!-- Loading indicator - Initially hidden -->
@@ -122,14 +121,15 @@
           <!-- Results Section (initially hidden) -->
           <div id="results" class="hidden">
             <h2 class="text-xl font-semibold text-gray-700 mb-4">Prediction Results</h2>
-            <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-4 shadow-inner">
+            <div
+              class="bg-gradient-to-r from-green-50 to-yellow-50 rounded-lg p-4 shadow-inner border border-green-100">
               <div class="flex items-center justify-between mb-2">
                 <span class="text-gray-700">Predicted Type:</span>
-                <span id="prediction" class="font-semibold text-indigo-600">-</span>
+                <span id="prediction" class="font-semibold text-green-700">-</span>
               </div>
               <div class="flex items-center justify-between">
                 <span class="text-gray-700">Confidence:</span>
-                <span id="confidence" class="font-semibold text-purple-600">-</span>
+                <span id="confidence" class="font-semibold text-yellow-600">-</span>
               </div>
             </div>
           </div>
@@ -222,6 +222,7 @@
       try {
         // Get the file from FilePond
         const file = pond.getFile().file;
+        console.log(file)
 
         // Ensure a file is selected
         if (!file) {
