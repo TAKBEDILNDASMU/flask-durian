@@ -90,58 +90,96 @@
 </head>
 
 <body class="min-h-screen">
-  <div class="container mx-auto px-4 py-8 max-w-4xl">
+  <div class="container mx-auto px-4 py-8 max-w-6xl">
     <!-- Header -->
     <div class="text-center mb-10">
       <h1 class="text-4xl font-bold mb-2 drop-shadow-lg">Durian Type Prediction 🍈</h1>
-      <p class="text-center text-gray-800 bg-white/60 rounded-lg p-2 mt-2 w-fit mx-auto">Upload a photo of durian leaves
-        to identify the type</p>
+      <p class="text-lg text-center text-gray-800 bg-white/60 rounded-lg p-2 mt-2 w-fit mx-auto">Upload a photo of
+        durian leaves to identify the type</p>
     </div>
-    <!-- Main Content -->
-    <div class="glass-effect rounded-lg shadow-lg p-6 mb-8">
-      <!-- Upload Section -->
-      <div class="mb-8">
-        <h2 class="text-xl font-semibold text-gray-700 mb-4">Upload Image</h2>
-        <input type="file" class="w-full" />
-        <!-- Predict Button - Initially hidden -->
-        <button id="predictBtn" class="hidden durian-button ">
-          Predict Durian Type
-        </button>
-        <!-- Loading indicator - Initially hidden -->
-        <div id="loadingIndicator" class="hidden mt-4 text-center">
-          <div
-            class="animate-spin inline-block w-6 h-6 border-[3px] border-indigo-600 border-t-transparent rounded-full">
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Main Content - Takes up 2 columns -->
+      <div class="lg:col-span-2">
+        <div class="glass-effect rounded-lg shadow-lg p-6 mb-6">
+          <!-- Upload Section -->
+          <div class="mb-8">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Upload Image</h2>
+            <input type="file" class="w-full" />
+            <!-- Predict Button - Initially hidden -->
+            <button id="predictBtn"
+              class="hidden mt-4 bg-gradient-to-r from-indigo-900 to-purple-600 hover:from-indigo-950 hover:to-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+              Predict Durian Type
+            </button>
+            <!-- Loading indicator - Initially hidden -->
+            <div id="loadingIndicator" class="hidden mt-4 text-center">
+              <div
+                class="animate-spin inline-block w-6 h-6 border-[3px] border-indigo-600 border-t-transparent rounded-full">
+              </div>
+              <span class="ml-2 text-gray-600">Processing image...</span>
+            </div>
           </div>
-          <span class="ml-2 text-gray-600">Processing image...</span>
+          <!-- Results Section (initially hidden) -->
+          <div id="results" class="hidden">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Prediction Results</h2>
+            <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-4 shadow-inner">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-gray-700">Predicted Type:</span>
+                <span id="prediction" class="font-semibold text-indigo-600">-</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-gray-700">Confidence:</span>
+                <span id="confidence" class="font-semibold text-purple-600">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="glass-effect rounded-lg shadow-lg p-6">
+          <h2 class="text-xl font-semibold text-gray-700 mb-4">Instructions</h2>
+          <ul class="list-disc list-inside text-gray-600 space-y-2">
+            <li>Upload a clear photo of durian leaves</li>
+            <li>Image should be well-lit and in focus</li>
+            <li>Supported formats: JPG, PNG</li>
+            <li>Maximum file size: 5MB</li>
+          </ul>
         </div>
       </div>
-      <!-- Results Section (initially hidden) -->
-      <div id="results" class="hidden">
-        <h2 class="text-xl font-semibold text-gray-700 mb-4">Prediction Results</h2>
-        <div class="bg-gradient-to-r from-lime-50 to-yellow-50 rounded-lg p-4 shadow-inner">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-gray-700">Predicted Type:</span>
-            <span id="prediction" class="font-semibold text-indigo-600">-</span>
+
+      <!-- History Section - Takes up 1 column -->
+      <div class="glass-effect rounded-lg shadow-lg p-6 h-[600px] flex flex-col">
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Prediction History</h2>
+        <!-- History list with scroll -->
+        <div id="historyList" class="flex-1 overflow-y-auto history-scroll space-y-4">
+          <!-- History items will be added here dynamically -->
+
+          <!-- Single Prediction Item -->
+          <div class="bg-white/70 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-200">
+            <div class="flex items-center justify-between">
+              <div class="flex-1">
+                <div class="flex items-center gap-2 mb-1">
+                  <h3 class="text-lg font-medium text-gray-900">Musang King</h3>
+                  <span class="px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded-full">Correct</span>
+                </div>
+                <div class="flex items-center gap-4">
+                  <span class="text-sm text-gray-500">2025-01-21 14:30</span>
+                  <div class="flex items-center">
+                    <div class="h-2 w-20 bg-gray-200 rounded-full overflow-hidden">
+                      <div class="h-full bg-green-500 rounded-full" style="width: 92%"></div>
+                    </div>
+                    <span class="ml-2 text-sm font-medium text-gray-600">92%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="flex items-center justify-between">
-            <span class="text-gray-700">Confidence:</span>
-            <span id="confidence" class="font-semibold text-pink-600">-</span>
-          </div>
+
         </div>
       </div>
-    </div>
-    <!-- Instructions -->
-    <div class="glass-effect rounded-lg shadow-lg p-6">
-      <h2 class="text-xl font-semibold text-gray-700 mb-4">Instructions</h2>
-      <ul class="list-disc list-inside text-gray-600 space-y-2">
-        <li>Upload a clear photo of durian leaves</li>
-        <li>Image should be well-lit and in focus</li>
-        <li>Supported formats: JPG, PNG</li>
-        <li>Maximum file size: 5MB</li>
-      </ul>
     </div>
   </div>
-  <!-- Scripts -->
+  <!--Scripts -->
   <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
   <script
     src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
