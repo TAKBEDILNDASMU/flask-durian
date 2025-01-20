@@ -185,20 +185,38 @@
         // Get the file from FilePond
         const file = pond.getFile().file;
 
-        // Here you would normally:
-        // 1. Create a FormData object
-        // 2. Append the file
-        // 3. Send to your API
-        // For demo, we'll simulate an API call
-        await simulatePredictionAPI(file);
+        // Ensure a file is selected
+        if (!file) {
+          alert('Please select a file before predicting.');
+          predictBtn.classList.remove('hidden');
+          loadingIndicator.classList.add('hidden');
+          return;
+        }
+
+        // Create FormData and append the file
+        const formData = new FormData();
+        formData.append('file', file);
+
+        // Send the file to the Flask backend
+        const response = await fetch('/predict', {
+          method: 'POST',
+          body: formData,
+        });
+
+        // Check if the response is OK
+        if (!response.ok) {
+          throw new Error(`Prediction failed: ${response.statusText}`);
+        }
+
+        // Parse the response JSON
+        const result = await response.json();
+
+        // Update results based on API response
+        document.getElementById('prediction').textContent = result.predicted_class || 'Unknown';
+        document.getElementById('confidence').textContent = `${(result.probability * 100).toFixed(2)}%`;
 
         // Show results
         resultsSection.classList.remove('hidden');
-
-        // Update results (in real app, use actual API response)
-        document.getElementById('prediction').textContent = 'Musang King';
-        document.getElementById('confidence').textContent = '95%';
-
       } catch (error) {
         console.error('Prediction failed:', error);
         alert('Failed to process image. Please try again.');
