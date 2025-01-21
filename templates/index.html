@@ -155,25 +155,27 @@
           <!-- History items will be added here dynamically -->
 
           <!-- Single Prediction Item -->
+          {% for prediction in predictions %}
           <div class="bg-white/70 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-200">
             <div class="flex items-center justify-between">
               <div class="flex-1">
                 <div class="flex items-center gap-2 mb-1">
-                  <h3 class="text-lg font-medium text-gray-900">Musang King</h3>
+                  <h3 class="text-lg font-medium text-gray-900">{{ prediction.durian_type }}</h3>
                   <span class="px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded-full">Correct</span>
                 </div>
                 <div class="flex items-center gap-4">
-                  <span class="text-sm text-gray-500">2025-01-21 14:30</span>
+                  <span class="text-sm text-gray-500">{{ prediction.prediction_timestamp }}</span>
                   <div class="flex items-center">
                     <div class="h-2 w-20 bg-gray-200 rounded-full overflow-hidden">
                       <div class="h-full bg-green-500 rounded-full" style="width: 92%"></div>
                     </div>
-                    <span class="ml-2 text-sm font-medium text-gray-600">92%</span>
+                    <span class="ml-2 text-sm font-medium text-gray-600">{{ prediction.confidence_score }}%</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          {% endfor %}
 
         </div>
       </div>
