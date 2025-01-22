@@ -152,31 +152,7 @@
         <h2 class="text-xl font-semibold text-gray-700 mb-4">Prediction History</h2>
         <!-- History list with scroll -->
         <div id="historyList" class="flex-1 overflow-y-auto history-scroll space-y-4">
-          <!-- History items will be added here dynamically -->
-
-          <!-- Single Prediction Item -->
-          {% for prediction in predictions %}
-          <div class="bg-white/70 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-200">
-            <div class="flex items-center justify-between">
-              <div class="flex-1">
-                <div class="flex items-center gap-2 mb-1">
-                  <h3 class="text-lg font-medium text-gray-900">{{ prediction.durian_type }}</h3>
-                  <span class="px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded-full">Correct</span>
-                </div>
-                <div class="flex items-center gap-4">
-                  <span class="text-sm text-gray-500">{{ prediction.prediction_timestamp }}</span>
-                  <div class="flex items-center">
-                    <div class="h-2 w-20 bg-gray-200 rounded-full overflow-hidden">
-                      <div class="h-full bg-green-500 rounded-full" style="width: 92%"></div>
-                    </div>
-                    <span class="ml-2 text-sm font-medium text-gray-600">{{ prediction.confidence_score|round(2) }}%</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-
+          <!-- History items will be added here dynamically using javascript-->
         </div>
       </div>
     </div>
@@ -267,15 +243,58 @@
       } finally {
         // Hide loading indicator
         loadingIndicator.classList.add('hidden');
+        await fetchPredictionHistory()
       }
     });
 
-    // Simulate API call (replace with actual API call)
-    function simulatePredictionAPI(file) {
-      return new Promise((resolve) => {
-        setTimeout(resolve, 1500); // Simulate 1.5s API call
-      });
+    async function fetchPredictionHistory(){
+      try {
+        const response = await fetch('/history');
+        if (!response.ok) {
+          throw new Error('Failed to fetch prediction history');
+        }
+
+        const data = await response.json();
+
+        // Get the predictions container
+        const historyContainer = document.getElementById('historyList');
+
+        if(data.predictions && data.predictions.length) > 0 {
+          data.predictions.forEach(prediction => {
+            const predictionElement = document.createElement('div');
+            predictionElement.classList.add('bg-white/70', 'rounded-lg', 'p-4', 'shadow-sm', 'hover:shadow-md', 'transition-all', 'duration-200');
+  
+             predictionElement.innerHTML = `
+              <div class="flex items-center justify-between">
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-1">
+                    <h3 class="text-lg font-medium text-gray-900">${prediction.durian_type}</h3>
+                    <span class="px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded-full">Correct</span>
+                  </div>
+                  <div class="flex items-center gap-4">
+                    <span class="text-sm text-gray-500">${prediction.prediction_timestamp}</span>
+                    <div class="flex items-center">
+                      <div class="h-2 w-20 bg-gray-200 rounded-full overflow-hidden">
+                        <div class="h-full bg-green-500 rounded-full" style="width: ${Math.min(prediction.confidence_score, 100)}%"></div>
+                      </div>
+                      <span class="ml-2 text-sm font-medium text-gray-600">${prediction.confidence_score.toFixed(2)}%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+  
+              historyContainer.appendChild(predictionElement);
+          });
+        } else {
+          historyContainer.innerHTML = '<p>No prediction history available.</p>';
+        }
+      } catch (error) {
+        console.error('Error fetching prediction history:', error);
+        document.getElementById('predictionsContainer').innerHTML = '<p>Error fetching prediction history.</p>';
+      }
     }
+   
   </script>
 </body>
 
