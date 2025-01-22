@@ -294,7 +294,9 @@
         document.getElementById('predictionsContainer').innerHTML = '<p>Error fetching prediction history.</p>';
       }
     }
-   
+
+    // Call the function to fetch and render history when the page loads
+    window.onload = fetchPredictionHistory;
   </script>
 </body>
 
